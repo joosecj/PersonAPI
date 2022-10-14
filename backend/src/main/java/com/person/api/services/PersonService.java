@@ -34,7 +34,14 @@ public class PersonService {
         return new PersonDTO(personEntity);
     }
 
-    private void copyDtoToEntity (PersonDTO personDTO, Person person) {
+    @Transactional(readOnly = false)
+    public PersonDTO update(Long id, PersonDTO personDTO) {
+        Person personEntity = personRepository.getReferenceById(id);
+        copyDtoToEntity(personDTO, personEntity);
+        return new PersonDTO(personRepository.save(personEntity));
+    }
+
+    private void copyDtoToEntity(PersonDTO personDTO, Person person) {
         person.setName(personDTO.getName());
         person.setEmail(personDTO.getEmail());
         person.setBirthDate(personDTO.getBirthDate());

@@ -35,5 +35,10 @@ public class PersonController {
         return ResponseEntity.created(uri).body(personDTO);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<PersonDTO> update(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+        return ResponseEntity.ok(personService.update(id, personDTO));
+    }
+
 
 }
