@@ -26,4 +26,18 @@ public class PersonService {
         return people.map(PersonDTO::new);
     }
 
+    @Transactional(readOnly = false)
+    public PersonDTO insert(PersonDTO personDTO) {
+        Person personEntity = new Person();
+        copyDtoToEntity(personDTO, personEntity);
+        personEntity = personRepository.save(personEntity);
+        return new PersonDTO(personEntity);
+    }
+
+    private void copyDtoToEntity (PersonDTO personDTO, Person person) {
+        person.setName(personDTO.getName());
+        person.setEmail(personDTO.getEmail());
+        person.setBirthDate(personDTO.getBirthDate());
+    }
+
 }

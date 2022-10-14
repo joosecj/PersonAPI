@@ -1,16 +1,15 @@
 package com.person.api.controllers;
 
 import com.person.api.DTO.PersonDTO;
-import com.person.api.entities.Person;
 import com.person.api.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/pessoa")
@@ -24,8 +23,17 @@ public class PersonController {
     }
 
     @GetMapping
-    public Page<PersonDTO> findAll (Pageable pageable) {
+    public Page<PersonDTO> findAll(Pageable pageable) {
         return personService.findAll(pageable);
     }
+
+    @PostMapping
+    public ResponseEntity<PersonDTO> insert(@RequestBody PersonDTO personDTO) {
+        personDTO = personService.insert(personDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(personDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(personDTO);
+    }
+
 
 }
