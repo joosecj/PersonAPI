@@ -41,6 +41,11 @@ public class PersonService {
         return new PersonDTO(personRepository.save(personEntity));
     }
 
+    @Transactional(readOnly = false)
+    public void delete(Long id) {
+        personRepository.deleteById(id);
+    }
+
     private void copyDtoToEntity(PersonDTO personDTO, Person person) {
         person.setName(personDTO.getName());
         person.setEmail(personDTO.getEmail());
