@@ -13,7 +13,6 @@ public class Person {
     private String name;
     @Column(unique = true)
     private String email;
-
     private LocalDate birthDate;
 
     public Person() {
