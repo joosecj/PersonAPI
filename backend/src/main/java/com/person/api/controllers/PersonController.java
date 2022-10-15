@@ -18,13 +18,13 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping(value = "/{id}")
-    public PersonDTO findById(@PathVariable Long id) {
-        return personService.findById(id);
+    public ResponseEntity<PersonDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(personService.findById(id));
     }
 
     @GetMapping
-    public Page<PersonDTO> findAll(Pageable pageable) {
-        return personService.findAll(pageable);
+    public ResponseEntity<Page<PersonDTO>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(personService.findAll(pageable));
     }
 
     @PostMapping
