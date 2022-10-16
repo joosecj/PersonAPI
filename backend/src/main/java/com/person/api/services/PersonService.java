@@ -3,9 +3,11 @@ package com.person.api.services;
 import com.person.api.DTO.PersonDTO;
 import com.person.api.entities.Person;
 import com.person.api.repositories.PersonRepository;
+import com.person.api.services.exceptions.DataBaseException;
 import com.person.api.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,8 +37,7 @@ public class PersonService {
     public PersonDTO insert(PersonDTO personDTO) {
         Person personEntity = new Person();
         copyDtoToEntity(personDTO, personEntity);
-        personEntity = personRepository.save(personEntity);
-        return new PersonDTO(personEntity);
+        return new PersonDTO(personRepository.save(personEntity));
     }
 
     @Transactional(readOnly = false)
@@ -56,6 +57,8 @@ public class PersonService {
             personRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Person not found");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Referential integrity failure");
         }
     }
 

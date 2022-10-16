@@ -2,6 +2,7 @@ package com.person.api.controllers;
 
 import com.person.api.DTO.PersonDTO;
 import com.person.api.services.PersonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<PersonDTO> insert(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<PersonDTO> insert(@Valid @RequestBody PersonDTO personDTO) {
         personDTO = personService.insert(personDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(personDTO.getId()).toUri();
@@ -36,7 +37,7 @@ public class PersonController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PersonDTO> update(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+    public ResponseEntity<PersonDTO> update(@PathVariable Long id, @Valid @RequestBody PersonDTO personDTO) {
         return ResponseEntity.ok(personService.update(id, personDTO));
     }
 
