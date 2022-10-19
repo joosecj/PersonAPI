@@ -20,12 +20,14 @@ public class PersonController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<PersonDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(personService.findById(id));
+        PersonDTO personDTO = personService.findById(id);
+        return ResponseEntity.ok().body(personDTO);
     }
 
     @GetMapping
     public ResponseEntity<Page<PersonDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(personService.findAll(pageable));
+        Page<PersonDTO> page = personService.findAll(pageable);
+        return ResponseEntity.ok().body(page);
     }
 
     @PostMapping
@@ -38,7 +40,7 @@ public class PersonController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<PersonDTO> update(@PathVariable Long id, @Valid @RequestBody PersonDTO personDTO) {
-        return ResponseEntity.ok(personService.update(id, personDTO));
+        return ResponseEntity.ok().body(personService.update(id, personDTO));
     }
 
     @DeleteMapping(value = "/{id}")
